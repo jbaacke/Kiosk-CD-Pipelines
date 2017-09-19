@@ -1,0 +1,937 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "A stack which deploys the initial resources for a self updating microservice",
+    "Parameters": {
+        "DesiredBucketName": {
+            "Description": "The name of the bucket to be created. Not currently validated against RegEx. Please refer to http://docs.aws.amazon.com/AmazonS3/latest/dev/BucketRestrictions.html for these restrictions",
+            "Type": "String",
+            "MinLength": "3",
+            "MaxLength": "63",
+            "Default": "kioskinformationsystems-deploy"
+        },
+        "LambdaSourceCodeBucket": {
+            "Description": "S3 bucket containing the source code for the lambda function controlling the initial creation of projects.",
+            "Type": "String",
+            "MinLength": "3",
+            "MaxLength": "63",
+            "Default": "kiosk-devops"
+        },
+        "LambdaSourceCodeKey": {
+            "Description": "Name of the zip file for the lambda function controlling the initial creation of projects.",
+            "Type": "String",
+            "Default": "SelfUpdatingMicroservice.zip"
+        },
+        "ActiveAutodeploy": {
+            "Type": "String",
+            "Default": "true",
+            "AllowedValues": [
+                "true",
+                "false"
+            ],
+            "Description": "Set this to false if you do not want the system to autodeploy uploaded code."
+        }
+    },
+    "Metadata": {
+        "AWS::CloudFormation::Interface": {
+            "ParameterGroups": [
+                {
+                    "Label": {
+                        "default": "Bucket Information"
+                    },
+                    "Parameters": [
+                        "DesiredBucketName"
+                    ]
+                },
+                {
+                    "Label": {
+                        "default": "Lambda Source Information"
+                    },
+                    "Parameters": [
+                        "LambdaSourceCodeBucket",
+                        "LambdaSourceCodeKey"
+                    ]
+                }
+            ],
+            "ParameterLabels": {
+                "DesiredBucketName": {
+                    "default": "What Bucket Name would you like?"
+                },
+                "LambdaSourceCodeBucket": {
+                    "default": "What bucket is the project creation lambda source code located in?"
+                },
+                "LambdaSourceCodeKey": {
+                    "default": "What is the bucket key for the project creation lambda in tha bucket?"
+                }
+            }
+        },
+        "AWS::CloudFormation::Designer": {
+            "0d95aede-7105-400c-8957-20ea5f6bc59c": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 90,
+                    "y": 120
+                },
+                "z": 1,
+                "embeds": []
+            },
+            "04592008-adca-4e95-b91b-694e6872693c": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": -20,
+                    "y": 120
+                },
+                "z": 1,
+                "embeds": [],
+                "isassociatedwith": [
+                    "0d95aede-7105-400c-8957-20ea5f6bc59c"
+                ],
+                "isrelatedto": [
+                    "273bb09f-95fa-418f-a64a-b9957b05653c"
+                ]
+            },
+            "f4ada221-fde4-43c0-8f5b-a90bfe244d55": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 90,
+                    "y": 20
+                },
+                "z": 1,
+                "embeds": [],
+                "isrelatedto": [
+                    "0d95aede-7105-400c-8957-20ea5f6bc59c"
+                ]
+            },
+            "5b3730c6-97b2-4331-b10a-0d8b3adf8ef7": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 310,
+                    "y": 120
+                },
+                "z": 1,
+                "embeds": []
+            },
+            "3670b735-d187-4e99-a4cf-8a868e65fada": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 310,
+                    "y": 20
+                },
+                "z": 1,
+                "embeds": [],
+                "isrelatedto": [
+                    "5b3730c6-97b2-4331-b10a-0d8b3adf8ef7"
+                ]
+            },
+            "4289bf3a-af47-4c72-9b33-396f7022bf4b": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 420,
+                    "y": 20
+                },
+                "z": 1,
+                "embeds": [],
+                "isassociatedwith": [
+                    "3670b735-d187-4e99-a4cf-8a868e65fada"
+                ]
+            },
+            "2a25ca80-691d-439d-a799-c6584a6e1ac9": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 310,
+                    "y": 220
+                },
+                "z": 1,
+                "embeds": [],
+                "isassociatedwith": [
+                    "5b3730c6-97b2-4331-b10a-0d8b3adf8ef7"
+                ]
+            },
+            "94c29320-647c-435d-8763-57d076590ef4": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": -20,
+                    "y": 20
+                },
+                "z": 1,
+                "embeds": []
+            },
+            "51d182e8-1042-4acc-8024-d5802808a63f": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 200,
+                    "y": 20
+                },
+                "z": 1,
+                "embeds": [],
+                "isrelatedto": [
+                    "3670b735-d187-4e99-a4cf-8a868e65fada"
+                ]
+            },
+            "48451c4f-5eaa-4df2-8aff-b0643898e153": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 200,
+                    "y": 120
+                },
+                "z": 1,
+                "embeds": [],
+                "isassociatedwith": [
+                    "51d182e8-1042-4acc-8024-d5802808a63f"
+                ],
+                "isrelatedto": [
+                    "0d95aede-7105-400c-8957-20ea5f6bc59c"
+                ]
+            },
+            "f6e969d9-c286-4f99-a5a6-bf7b7bf8e5ab": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 600,
+                    "y": 120
+                },
+                "z": 1,
+                "embeds": []
+            },
+            "ae9020e6-d860-4824-96b5-100937eb325e": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 590,
+                    "y": 240
+                },
+                "z": 1,
+                "embeds": [],
+                "isassociatedwith": [
+                    "f6e969d9-c286-4f99-a5a6-bf7b7bf8e5ab"
+                ]
+            },
+            "273bb09f-95fa-418f-a64a-b9957b05653c": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 590,
+                    "y": 30
+                },
+                "z": 1,
+                "embeds": [],
+                "isrelatedto": [
+                    "f6e969d9-c286-4f99-a5a6-bf7b7bf8e5ab"
+                ]
+            },
+            "fe30d8b3-b224-4b5a-9f2c-ea5a90b45025": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 720,
+                    "y": 120
+                },
+                "z": 1,
+                "embeds": []
+            },
+            "35e22b57-4a5a-4bf0-a8e5-ad946ad39a9e": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 720,
+                    "y": 20
+                },
+                "z": 1,
+                "embeds": [],
+                "isrelatedto": [
+                    "fe30d8b3-b224-4b5a-9f2c-ea5a90b45025"
+                ]
+            },
+            "cf0c94b9-8ab3-4550-929c-3ca226666b68": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 600,
+                    "y": 20
+                },
+                "z": 1,
+                "embeds": [],
+                "isassociatedwith": [
+                    "f6e969d9-c286-4f99-a5a6-bf7b7bf8e5ab"
+                ]
+            },
+            "573ff56c-fece-4bc9-8b0b-b5823025aa4c": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 600,
+                    "y": 220
+                },
+                "z": 1,
+                "embeds": [],
+                "isrelatedto": [
+                    "f6e969d9-c286-4f99-a5a6-bf7b7bf8e5ab"
+                ]
+            },
+            "5e47f300-1664-4960-a964-0c1570969994": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 720,
+                    "y": 220
+                },
+                "z": 1,
+                "embeds": [],
+                "isassociatedwith": [
+                    "fe30d8b3-b224-4b5a-9f2c-ea5a90b45025"
+                ],
+                "isrelatedto": [
+                    "573ff56c-fece-4bc9-8b0b-b5823025aa4c"
+                ]
+            }
+        }
+    },
+    "Conditions": {
+        "SetLambdaTrigger": {
+            "Fn::Equals": [
+                {
+                    "Ref": "ActiveAutodeploy"
+                },
+                "true"
+            ]
+        }
+    },
+    "Resources": {
+        "SourceBucket": {
+            "Type": "AWS::S3::Bucket",
+            "Properties": {
+                "BucketName": {
+                    "Ref": "DesiredBucketName"
+                },
+                "Tags": [],
+                "NotificationConfiguration": {
+                    "Fn::If": [
+                        "SetLambdaTrigger",
+                        {
+                            "LambdaConfigurations": [
+                                {
+                                    "Function": {
+                                        "Fn::GetAtt": [
+                                            "ProjectCreationLambda",
+                                            "Arn"
+                                        ]
+                                    },
+                                    "Event": "s3:ObjectCreated:*",
+                                    "Filter": {
+                                        "S3Key": {
+                                            "Rules": [
+                                                {
+                                                    "Name": "suffix",
+                                                    "Value": ".template"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        {}
+                    ]
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "51d182e8-1042-4acc-8024-d5802808a63f"
+                }
+            }
+        },
+        "BucketUploadPolicy": {
+            "Type": "AWS::S3::BucketPolicy",
+            "Properties": {
+                "Bucket": {
+                    "Ref": "SourceBucket"
+                },
+                "PolicyDocument": {
+                    "Statement": [
+                        {
+                            "Action": [
+                                "*"
+                            ],
+                            "Effect": "Allow",
+                            "Resource": {
+                                "Fn::Join": [
+                                    "",
+                                    [
+                                        "arn:aws:s3:::",
+                                        {
+                                            "Ref": "SourceBucket"
+                                        },
+                                        "/*"
+                                    ]
+                                ]
+                            },
+                            "Principal": {
+                                "AWS": {
+                                    "Fn::GetAtt": [
+                                        "UploadUser",
+                                        "Arn"
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "48451c4f-5eaa-4df2-8aff-b0643898e153"
+                }
+            }
+        },
+        "BucketSNS": {
+            "Type": "AWS::SNS::Topic",
+            "Properties": {
+                "DisplayName": {
+                    "Fn::Join": [
+                        "-",
+                        [
+                            {
+                                "Ref": "DesiredBucketName"
+                            },
+                            "Notification Service"
+                        ]
+                    ]
+                },
+                "Subscription": []
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "94c29320-647c-435d-8763-57d076590ef4"
+                }
+            }
+        },
+        "ProjectCreationPolicy": {
+            "Type": "AWS::IAM::Policy",
+            "Properties": {
+                "PolicyName": {
+                    "Fn::Join": [
+                        "-",
+                        [
+                            {
+                                "Ref": "DesiredBucketName"
+                            },
+                            "ProjectCreationPolicy"
+                        ]
+                    ]
+                },
+                "Roles": [
+                    {
+                        "Ref": "ProjectCreationRole"
+                    }
+                ],
+                "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Action": "*",
+                            "Resource": "*"
+                        }
+                    ]
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "2a25ca80-691d-439d-a799-c6584a6e1ac9"
+                }
+            }
+        },
+        "ProjectCreationRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Sid": "",
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                            },
+                            "Action": "sts:AssumeRole"
+                        },
+                        {
+                            "Sid": "",
+                            "Effect": "Allow",
+                            "Principal": {
+                                "AWS": "arn:aws:iam::771762743097:root"
+                            },
+                            "Action": "sts:AssumeRole"
+                        },
+                        {
+                            "Sid": "",
+                            "Effect": "Allow",
+                            "Principal": {
+                                "AWS": "arn:aws:iam::147242972042:root"
+                            },
+                            "Action": "sts:AssumeRole"
+                        },
+                        {
+                            "Sid": "",
+                            "Effect": "Allow",
+                            "Principal": {
+                                "AWS": "arn:aws:iam::571267556732:root"
+                            },
+                            "Action": "sts:AssumeRole"
+                        }
+                    ]
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "5b3730c6-97b2-4331-b10a-0d8b3adf8ef7"
+                }
+            }
+        },
+        "ProjectCreationLambda": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+                "Code": {
+                    "S3Bucket": {
+                        "Ref": "LambdaSourceCodeBucket"
+                    },
+                    "S3Key": {
+                        "Ref": "LambdaSourceCodeKey"
+                    }
+                },
+                "Description": {
+                    "Fn::Join": [
+                        " ",
+                        [
+                            "Project Creation Utility Lambda for the",
+                            {
+                                "Ref": "DesiredBucketName"
+                            },
+                            "Deployment Lambda"
+                        ]
+                    ]
+                },
+                "FunctionName": {
+                    "Fn::Join": [
+                        "-",
+                        [
+                            {
+                                "Ref": "DesiredBucketName"
+                            },
+                            "ProjectCreation"
+                        ]
+                    ]
+                },
+                "Handler": "SelfUpdatingMicroservice::SelfUpdatingMicroservice.Function::FunctionHandler",
+                "MemorySize": 128,
+                "Role": {
+                    "Fn::GetAtt": [
+                        "ProjectCreationRole",
+                        "Arn"
+                    ]
+                },
+                "Runtime": "dotnetcore1.0",
+                "Timeout": 300
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "3670b735-d187-4e99-a4cf-8a868e65fada"
+                }
+            }
+        },
+        "BucketLambdaPermission": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+                "Action": "lambda:InvokeFunction",
+                "FunctionName": {
+                    "Fn::GetAtt": [
+                        "ProjectCreationLambda",
+                        "Arn"
+                    ]
+                },
+                "Principal": "s3.amazonaws.com",
+                "SourceAccount": {
+                    "Ref": "AWS::AccountId"
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "4289bf3a-af47-4c72-9b33-396f7022bf4b"
+                }
+            }
+        },
+        "UploadUser": {
+            "Type": "AWS::IAM::User",
+            "Properties": {
+                "Policies": [],
+                "UserName": {
+                    "Fn::Join": [
+                        "-",
+                        [
+                            {
+                                "Ref": "DesiredBucketName"
+                            },
+                            "UploadUser"
+                        ]
+                    ]
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "0d95aede-7105-400c-8957-20ea5f6bc59c"
+                }
+            }
+        },
+        "UploadUserAccessKey": {
+            "Type": "AWS::IAM::AccessKey",
+            "Properties": {
+                "UserName": {
+                    "Ref": "UploadUser"
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "f4ada221-fde4-43c0-8f5b-a90bfe244d55"
+                }
+            }
+        },
+        "S3UploadPolicy": {
+            "Type": "AWS::IAM::Policy",
+            "Properties": {
+                "PolicyName": {
+                    "Fn::Join": [
+                        "-",
+                        [
+                            {
+                                "Ref": "DesiredBucketName"
+                            },
+                            "UploadPolicy"
+                        ]
+                    ]
+                },
+                "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                                "s3:PutObject"
+                            ],
+                            "Resource": [
+                                {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            "arn:aws:s3:::",
+                                            {
+                                                "Ref": "DesiredBucketName"
+                                            }
+                                        ]
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "Users": [
+                    {
+                        "Ref": "UploadUser"
+                    }
+                ]
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "04592008-adca-4e95-b91b-694e6872693c"
+                }
+            }
+        },
+        "DummyLambda": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+                "Code": {
+                    "S3Bucket": {
+                        "Ref": "LambdaSourceCodeBucket"
+                    },
+                    "S3Key": {
+                        "Ref": "LambdaSourceCodeKey"
+                    }
+                },
+                "Description": {
+                    "Fn::Join": [
+                        " ",
+                        [
+                            "A dummy lambda so the lambda packaging build step will work. ",
+                            {
+                                "Ref": "DesiredBucketName"
+                            },
+                            "Dummy Deployment Lambda"
+                        ]
+                    ]
+                },
+                "FunctionName": {
+                    "Fn::Join": [
+                        "-",
+                        [
+                            {
+                                "Ref": "DesiredBucketName"
+                            },
+                            "DummyLambda"
+                        ]
+                    ]
+                },
+                "Handler": "SelfUpdatingMicroservice::SelfUpdatingMicroservice.Function::FunctionHandler",
+                "MemorySize": 128,
+                "Role": {
+                    "Fn::GetAtt": [
+                        "DummyLambdaRole",
+                        "Arn"
+                    ]
+                },
+                "Runtime": "dotnetcore1.0",
+                "Timeout": 300
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "573ff56c-fece-4bc9-8b0b-b5823025aa4c"
+                }
+            }
+        },
+        "DummyLambdaPolicy": {
+            "Type": "AWS::IAM::Policy",
+            "Properties": {
+                "PolicyName": {
+                    "Fn::Join": [
+                        "-",
+                        [
+                            {
+                                "Ref": "DesiredBucketName"
+                            },
+                            "DummyLambdaPolicy"
+                        ]
+                    ]
+                },
+                "Roles": [
+                    {
+                        "Ref": "DummyLambdaRole"
+                    }
+                ],
+                "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Deny",
+                            "Action": "*",
+                            "Resource": "*"
+                        }
+                    ]
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "cf0c94b9-8ab3-4550-929c-3ca226666b68"
+                }
+            }
+        },
+        "DummyLambdaRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Sid": "",
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                            },
+                            "Action": "sts:AssumeRole"
+                        }
+                    ]
+                },
+                "RoleName": {
+                    "Fn::Join": [
+                        "-",
+                        [
+                            {
+                                "Ref": "DesiredBucketName"
+                            },
+                            "DummyLambdaRole"
+                        ]
+                    ]
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "f6e969d9-c286-4f99-a5a6-bf7b7bf8e5ab"
+                }
+            }
+        },
+        "DummyDeployUser": {
+            "Type": "AWS::IAM::User",
+            "Properties": {
+                "Policies": [],
+                "UserName": {
+                    "Fn::Join": [
+                        "-",
+                        [
+                            {
+                                "Ref": "DesiredBucketName"
+                            },
+                            "DummyDeployUser"
+                        ]
+                    ]
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "fe30d8b3-b224-4b5a-9f2c-ea5a90b45025"
+                }
+            }
+        },
+        "DummyDeployUserAccessKey": {
+            "Type": "AWS::IAM::AccessKey",
+            "Properties": {
+                "UserName": {
+                    "Ref": "DummyDeployUser"
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "35e22b57-4a5a-4bf0-a8e5-ad946ad39a9e"
+                }
+            }
+        },
+        "DummyFunctionUploadUserPolicy": {
+            "Type": "AWS::IAM::Policy",
+            "Properties": {
+                "PolicyName": {
+                    "Fn::Join": [
+                        "-",
+                        [
+                            {
+                                "Ref": "DesiredBucketName"
+                            },
+                            "DummyDeployUserPolicy"
+                        ]
+                    ]
+                },
+                "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                                "lambda:UpdateFunctionCode",
+                                "lambda:UpdateFunctionConfiguration"
+                            ],
+                            "Resource": [
+                                {
+                                    "Fn::GetAtt" : ["DummyLambda", "Arn"]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "Users": [
+                    {
+                        "Ref": "DummyDeployUser"
+                    }
+                ]
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "5e47f300-1664-4960-a964-0c1570969994"
+                }
+            }
+        }
+    },
+    "Outputs": {
+        "BucketName": {
+            "Description": "The S3 bucket name",
+            "Value": {
+                "Ref": "SourceBucket"
+            }
+        },
+        "ProjectCreationAccessKey": {
+            "Description": "Access key of the user who has permissions to upload to the S3 bucket",
+            "Value": {
+                "Ref": "UploadUserAccessKey"
+            }
+        },
+        "ProjectCreationSecretAccessKey": {
+            "Description": "Secret access key of the user who has permissions to upload to the S3 bucket",
+            "Value": {
+                "Fn::GetAtt": [
+                    "UploadUserAccessKey",
+                    "SecretAccessKey"
+                ]
+            }
+        },
+        "DummyDeployUserAccessKey": {
+            "Description": "Access key of the user who has permissions to upload to the S3 bucket",
+            "Value": {
+                "Ref": "DummyDeployUserAccessKey"
+            }
+        },
+        "DummyDeployUserSecretAccessKey": {
+            "Description": "Secret access key of the user who has permissions to upload to the S3 bucket",
+            "Value": {
+                "Fn::GetAtt": [
+                    "DummyDeployUserAccessKey",
+                    "SecretAccessKey"
+                ]
+            }
+        },
+		"DummyLambda": {
+            "Description": "The name of the dummy deploy function",
+            "Value": {
+                "Ref": "SourceBucket"
+            }
+        }
+    }
+}
