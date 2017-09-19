@@ -1,0 +1,47 @@
+{
+  "Name": "Harry",
+  "Displays": [
+    {
+      "Type": "DisplaySite",
+      "DisplalyName": "DevOps Board",
+      "Timer": 20.0,
+      "IsLockedSite": false,
+      "Address": "https://kiosk.visualstudio.com//DevOps//_backlogs//taskboard",
+      "Prefixes": [],
+      "Steps": [
+        "document.getElementById('i0116').value='ProjectStatus@Kiosk.com';"
+      ]
+    },
+    {
+      "Type": "DisplaySite",
+      "DisplalyName": "Response Team Board",
+      "Timer": 20.0,
+      "IsLockedSite": false,
+      "Address": "https://kiosk.visualstudio.com//SDG%20Response%20Team//_backlogs//board",
+      "Prefixes": [],
+      "Steps": [
+        "document.getElementById('i0116').value='ProjectStatus@Kiosk.com';"
+      ]
+    },
+	{
+      "Type": "DisplaySite",
+      "DisplalyName": "K-Nect",
+      "Timer": 20.0,
+      "IsLockedSite": false,
+      "Address": "https://k-nect.com",
+      "Prefixes": [],
+      "Steps": []
+    },
+	{
+      "Type": "DisplaySite",
+      "DisplalyName": "CORE Dashboard",
+      "Timer": 20.0,
+      "IsLockedSite": false,
+      "Address": "https://kiosk.visualstudio.com/CORE%20Platform/_home",
+	  "Prefixes": [],
+      "Steps": [
+        "document.getElementById('i0116').value='ProjectStatus@Kiosk.com';"
+      ]
+    }
+  ]
+}

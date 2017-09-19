@@ -1,0 +1,181 @@
+﻿<Window x:Class="Carousel.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Carousel"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525"
+        WindowStyle="None" ResizeMode="NoResize"  
+        WindowStartupLocation="CenterScreen" WindowState="Maximized"
+        Background="#75858C">
+
+
+    <Window.Resources>
+        <!--I will set buttons with the KIOSK theme colors-->
+        <Style TargetType="Button">
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="MinWidth" Value="100"/>
+            <Setter Property="Background" Value="#7f7f7f"/>
+            <Setter Property="Foreground" Value="#afbd20"/>
+        </Style>
+        <Style TargetType="ListBox" x:Key="MenuList">
+            <Setter Property="Background" Value="#7f7f7f"/>
+            <Setter Property="Foreground" Value="#afbd20"/>
+            <Setter Property="MinWidth" Value="90"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+
+        <!--This will be the region I throw up when the user is timing out of their session. -->
+        <Grid Name="TimeoutScreen"
+              Visibility="Hidden"
+              Margin="0,0,0,0"
+              Background="#d9d9d9">
+            <StackPanel Name="ContinueBox"
+                        Background="#7f7f7f"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center">
+                <TextBlock Name="ContinueSessionText"
+                           Padding="5">
+                    Would you like to continue your session?
+                </TextBlock>
+                <Button Name="ContinueSessionButton" 
+                        Click="ContinueSessionButton_Click"
+                        Padding="5">
+                    Continue
+                </Button>
+                <Button Name="TimeoutReset"
+                        Click="TimeoutReset_Click">
+                    Logout and Reset
+                </Button>
+            </StackPanel>
+        </Grid>
+
+        <Grid Name="ActiveWindow"
+              Visibility="Visible">
+
+            <!--This will be my splash screen-->
+            <Grid Name="DisplaySplash" 
+              Visibility="Visible" 
+              Background="#d9d9d9"
+              Margin="0,0,0,30">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Image Source="https://daks2k3a4ib2z.cloudfront.net/576c036456781b9d0fb18681/578772b731fabebb32b381c6_kioskinfo-logo.png"
+                       Grid.Column="1"/>
+            </Grid>
+
+            <!--This DisplayRegion will be where I display content to the user-->
+            <Grid Name="DisplayRegion"
+              Margin="0,0,0,30"
+              Panel.ZIndex="1">
+            </Grid>
+
+            <!--This MenuRegion will be where I control by menus-->
+            <Grid Name="MenuRegion"
+              Panel.ZIndex="100">
+
+
+                <!--The display selector will allow the user to choose which display in their list they want to view-->
+                <ListBox Name="DisplaySelector"
+                     Margin="0,0,0,30"
+                     HorizontalAlignment="Right"
+                     VerticalAlignment="Bottom"
+                     Visibility="Hidden"
+                     SelectionChanged="DisplaySelector_SelectionChanged"
+                     Panel.ZIndex="101"
+                     Style="{StaticResource MenuList}"
+                     >
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="2">
+                                <StackPanel Orientation="Horizontal" >
+                                    <TextBlock Text="{Binding DisplayName}" 
+                                           Margin="2"/>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+                <!--The left menu will have the exit button and allow the user to switch between display lists-->
+                <StackPanel Name="ApplicationMenu"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Bottom"
+                            HorizontalAlignment="Left">
+                    <Button Name="Menu"
+                            Click="Menu_Click">
+                        Menu
+                    </Button>
+                    <Button Name="ExitButton"
+                            Click="ExitButton_Click">
+                        Exit
+                    </Button>
+                    <Button Name="Reset"
+                            Click="Reset_Click">
+                        Logout and Reset
+                    </Button>
+                </StackPanel>
+
+                <StackPanel Name="ClockPanel"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Bottom"
+                            HorizontalAlignment="Center">
+                    <Button Name="Clock">
+
+                    </Button>
+                </StackPanel>
+
+                <!--The right menu will control the current display list and looping options-->
+                <StackPanel Name="DisplayMenu"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Bottom" 
+                            HorizontalAlignment="Right">
+                    <Button Name="NextButton"
+                            Click="NextButton_Click">
+                        Next Display
+                    </Button>
+                    <Button Name="LoopButton"
+                            Click="LoopButton_Click">
+                        Start Looping
+                    </Button>
+                    <Button Name="SelectDisplayButton"
+                            Click="SelectDisplayButton_Click">
+                        Select Display
+                    </Button>
+                </StackPanel>
+
+                <!--This menu will handle application level options-->
+                <StackPanel Name="MenuSelector"
+                        Orientation="Vertical"
+                        Margin="0,0,0,30"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Bottom"
+                        Visibility="Hidden"
+                        Panel.ZIndex="101"
+                        >
+                    <Button Name="LoadButton"
+                        Click="LoadButton_Click">
+                        Load Display List
+                    </Button>
+                    <Button Name="SaveButton"
+                        Click="SaveButton_Click">
+                        Save Display List
+                    </Button>
+                    <Button Name="EditButton"
+                        Click="EditButton_Click">
+                        Edit Display List
+                    </Button>
+                </StackPanel>
+
+            </Grid>
+        </Grid>
+
+    </Grid>
+
+</Window>

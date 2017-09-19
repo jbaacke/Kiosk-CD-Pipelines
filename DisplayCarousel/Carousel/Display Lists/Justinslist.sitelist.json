@@ -1,0 +1,34 @@
+{
+  "Displays": [
+    {
+      "Name": "Google",
+      "Address": "http://www.google.com",
+      "Type": "BasicSite",
+      "Timer": 6.0,
+      "ID": "3c81d4b9-a9a6-453b-b8ac-dce280843722"
+    },
+    {
+      "Name": "XKCD",
+      "Address": "http://www.xkcd.com",
+      "Type": "BasicSite",
+      "Timer": 3.0,
+      "ID": "af360504-d535-45fe-bcb4-77784add147d"
+    },
+    {
+      "Name": "KIOSK",
+      "Address": "http://www.kiosk.com",
+      "Type": "BasicSite",
+      "Timer": 6.0,
+      "ID": "f49d83e0-5c73-4d36-9765-f861f31f2728"
+    },
+    {
+      "Name": "Amazon",
+      "Address": "http://www.Amazon.com",
+      "Type": "BasicSite",
+      "Timer": 6.0,
+      "ID": "afc4772b-8924-4b35-8738-eeaa44bbfe94"
+    }
+  ],
+  "Name": "Unnamed",
+  "Index": 0
+}
